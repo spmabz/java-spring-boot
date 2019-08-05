@@ -16,7 +16,7 @@ To run this do the following:
 
 
 - To check if it's working: http://localhost:8080/v2/pets/1
-- To get to swagger UI: http://localhost:8080/v2/swagger.json
+- To get to swagger JSON: http://localhost:8080/v2/swagger.json
 - To get to swagger UI: http://localhost:8080/v2/index.html
 
 ## LAB
