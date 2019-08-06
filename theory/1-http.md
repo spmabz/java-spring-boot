@@ -84,10 +84,11 @@ HTTP messages are composed of textual information encoded in ASCII, and span ove
 HTTP requests, and responses, share similar structure and are composed of:
 
 1. A start-line describing the requests to be implemented, or its status of whether successful or a failure. This start-line is always a single line.
-An optional set of HTTP headers specifying the request, or describing the body included in the message.
+1. An optional set of HTTP headers specifying the request, or describing the body included in the message.
 1. A blank line indicating all meta-information for the request have been sent.
 1. An optional body containing data associated with the request (like content of an HTML form), or the document associated with a response. The presence of the body and its size is specified by the start-line and HTTP headers.
-1. The start-line and HTTP headers of the HTTP message are collectively known as the head of the requests, whereas its payload is known as the body.
+
+The start-line and HTTP headers of the HTTP message are collectively known as the head of the requests, whereas its payload is known as the body.
 
 ![](images/HTTPMsgStructure2.png)
 
@@ -118,41 +119,6 @@ Headers can be grouped according to their contexts:
 - **Request header:** Headers containing more information about the resource to be fetched or about the client itself.
 - **Response header:** Headers with additional information about the response, like its location or about the server itself (name and version etc.).
 - **Entity header:** Headers containing more information about the body of the entity, like its content length or its MIME-type.
-
-> ***The list below is not exhaustive, just those that are immediately relevant to this course.***
-
-### Caching
-- **Age:** The time in seconds the object has been in a proxy cache.
-- **Cache-Control:** Specifies directives for caching mechanisms in both, requests and responses.
-- **Expires:** The date/time after which the response is considered stale.
-
-### Conditionals
-- **Last-Modified:** It is a validator, the last modification date of the resource, used to compare several versions of the same resource. It is less accurate than ETag, but easier to calculate in some environments. Conditional requests using If-Modified-Since and If-Unmodified-Since use this value to change the behavior of the request.
-- **ETag:** It is a validator, a unique string identifying the version of the resource. Conditional requests using If-Match and If-None-Match use this value to change the behavior of the request.
-
-### Connection management
-- **Connection:** Controls whether or not the network connection stays open after the current transaction finishes.
-- **Keep-Alive:** Controls how long a persistent connection should stay open.
-
-### Content negotiation
-- **Accept:** Informs the server about the types of data that can be sent back. It is MIME-type.
-- **Accept-Encoding:** Informs the server about the encoding algorithm, usually a compression algorithm, that can be used on the resource sent back.
-
-### Cookies
-- **Cookie:** Contains stored HTTP cookies previously sent by the server with the Set-Cookie header.
-- **Set-Cookie:** Send cookies from the server to the user agent.
-
-### CORS
-- **Access-Control-Allow-Origin:** Indicates whether the response can be shared.
-
-### Downloads
-- **Content-Disposition:** Is a response header if the ressource transmitted should be displayed inline (default behavior when the header is not present), or it should be handled like a download and the browser should present a 'Save As' window.
-
-### Message body information
-- **Content-Length:** indicates the size of the entity-body, in decimal number of octets, sent to the recipient.
-- **Content-Type:** Indicates the media type of the resource.
-- **Content-Encoding:** Used to specify the compression algorithm.
-- **X-Forwarded-For:** Identifies the originating IP addresses of a client connecting to a web server through an HTTP proxy or a load balancer.
 
 ## HTTP Verbs
 
@@ -185,6 +151,24 @@ HTTP defines a set of request methods to indicate the desired action to be perfo
     - *500:* Internal Server Error
     - *503:* Service Unavailable
 
+> **Request–response**, or request–reply, is one of the basic methods computers use to communicate with each other, in which the first computer sends a request for some data and the second computer responds to the request. 
+
+### Sequence of events
+1. The client calls the client stub. The call is a local procedure call, with parameters pushed on to the stack in the normal way.
+1. The client stub packs the parameters into a message and makes a system call to send the message. Packing the parameters is called marshalling.
+1. The client's local operating system sends the message from the client machine to the server machine.
+1. The local operating system on the server machine passes the incoming packets to the server stub.
+1. The server stub unpacks the parameters from the message. Unpacking the parameters is called unmarshalling.
+1. Finally, the server stub calls the server procedure. The reply traces the same steps in the reverse direction.
+
+## Idempotence
+Idempotence is an important concept in terms of HTTP requests. The result of an idempotent request is independent of how many times it has been executed. 
+
+*For example:* fetching a list of items doesn't change the list of items in any way, so executing the fetch multiple times has no bearing on the content of the response.
+
+There is a *de facto* relationship between some HTTP verbs and characteristics of idempotence, although those are by convention only. Out of the common operators: GET, PUT and DELETE are typically idempotent actions, whereas POST AND PATCH are not idempotent.
+
 # References
 
 - [MDN HTTP Overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
+- [Wikipedia: Idempotence](https://en.wikipedia.org/wiki/Idempotence)
